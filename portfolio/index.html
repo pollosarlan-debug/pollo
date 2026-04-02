@@ -1,0 +1,225 @@
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { useRef, useEffect, useState } from "react";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.8 } }
+};
+
+export default function Portfolio() {
+  const redesRef = useRef(null);
+  const [loading, setLoading] = useState(true);
+
+  const scrollToRedes = () => {
+    redesRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 1200);
+  }, []);
+
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.href = "https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+  }, []);
+
+  useEffect(() => {
+    const move = (e) => {
+      const glow = document.getElementById("glow");
+      if (glow) {
+        glow.style.left = e.clientX + "px";
+        glow.style.top = e.clientY + "px";
+      }
+    };
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
+  }, []);
+
+  const DISCORD_LINK = "https://discord.gg/tu-invite";
+
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-black text-white">
+        <motion.h1
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ repeat: Infinity, duration: 1 }}
+          className="text-4xl"
+          style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+        >
+          Cargando...
+        </motion.h1>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative bg-black text-white min-h-screen overflow-x-hidden">
+
+      <div id="glow" className="fixed w-80 h-80 bg-cyan-500/20 blur-3xl rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2" />
+
+      {/* HERO */}
+      <section className="flex flex-col items-center justify-center h-screen text-center px-6">
+
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-cyan-400 mb-2 tracking-widest uppercase">
+          🇦🇷 Argentina
+        </motion.p>
+
+        <motion.h1
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          className="text-7xl md:text-9xl mb-2 bg-gradient-to-r from-cyan-300 via-blue-400 to-cyan-200 text-transparent bg-clip-text"
+          style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+        >
+          Pollo
+        </motion.h1>
+
+        <motion.h2 variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.3 }} className="text-2xl md:text-3xl mb-4">
+          Editor de videos
+        </motion.h2>
+
+        <motion.p variants={fadeUp} initial="hidden" animate="show" transition={{ delay: 0.6 }} className="text-md md:text-lg mb-8 text-gray-400 max-w-xl">
+          Editor de videos ya sea shorts de YouTube, TikToks o Instagram Reels
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.9 }}
+          whileHover={{ scale: 1.15 }}
+          whileTap={{ scale: 0.95 }}>
+          <Button onClick={scrollToRedes} className="rounded-full px-8 py-4 text-lg bg-gradient-to-r from-cyan-500 to-blue-600">
+            Contactame
+          </Button>
+        </motion.div>
+      </section>
+
+      {/* HERRAMIENTAS */}
+<section className="px-6 py-24 text-center">
+  <motion.h2
+    variants={fadeUp}
+    initial="hidden"
+    whileInView="show"
+    className="text-3xl mb-12"
+  >
+    Herramientas que uso
+  </motion.h2>
+
+  <div className="flex justify-center gap-10 flex-wrap">
+    {[
+      {
+        name: "CapCut",
+        color: "from-cyan-400 to-blue-600",
+        glow: "shadow-[0_0_25px_rgba(0,200,255,0.6)]",
+        icon: (
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+            <path d="M4 6l6 6-6 6h4l6-6-6-6H4zm10 0l6 6-6 6h4l6-6-6-6h-4z"/>
+          </svg>
+        )
+      },
+      {
+        name: "Premiere",
+        color: "from-purple-500 to-indigo-700",
+        glow: "shadow-[0_0_25px_rgba(150,0,255,0.6)]",
+        icon: (
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+            <rect x="3" y="3" width="18" height="18" rx="4"/>
+            <text x="12" y="16" textAnchor="middle" fontSize="10" fill="black">Pr</text>
+          </svg>
+        )
+      }
+    ].map((tool, i) => (
+      <motion.div
+        key={i}
+        whileHover={{ scale: 1.15 }}
+        whileTap={{ scale: 0.9 }}
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ delay: i * 0.2 }}
+        className={`p-[2px] rounded-2xl bg-gradient-to-r ${tool.color}`}
+      >
+        <div className={`w-20 h-20 bg-black rounded-2xl flex items-center justify-center transition-all duration-300 hover:${tool.glow}`}>
+          {tool.icon}
+        </div>
+        <p className="mt-2 text-sm text-gray-400">{tool.name}</p>
+      </motion.div>
+    ))}
+  </div>
+</section>
+
+      {/* PORTFOLIO */}
+      <section className="px-6 py-24">
+        <motion.h2 variants={fadeUp} initial="hidden" whileInView="show" className="text-3xl mb-12 text-center">
+          Mis trabajos
+        </motion.h2>
+
+        <h3 className="text-xl mb-6 text-cyan-400">Videos en horizontal</h3>
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          {[1, 2, 3].map((i) => (
+            <motion.div key={i} whileHover={{ scale: 1.05 }} className="bg-blue-900 rounded-2xl overflow-hidden">
+              <video src="/video1.mp4" autoPlay loop muted className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+            </motion.div>
+          ))}
+        </div>
+
+        <h3 className="text-xl mb-6 text-cyan-400">Videos en vertical</h3>
+        <div className="grid md:grid-cols-3 gap-8">
+          {[1, 2, 3].map((i) => (
+            <motion.div key={i} whileHover={{ scale: 1.05 }} className="bg-blue-900 rounded-2xl overflow-hidden aspect-[9/16]">
+              <video src="/video1.mp4" autoPlay loop muted className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* REDES */}
+      <section ref={redesRef} className="px-6 py-24 text-center">
+        <motion.h2 variants={fadeUp} initial="hidden" whileInView="show" className="text-3xl mb-10">
+          Mis redes
+        </motion.h2>
+
+        <div className="flex justify-center gap-8 flex-wrap">
+
+          {[
+            { link: "https://x.com/facusarlanga", color: "from-black via-gray-800 to-black", icon: (
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+                <path d="M18.244 2H21l-6.563 7.5L22 22h-6.828l-4.75-6.156L4.9 22H2l7.031-8.031L2 2h6.828l4.25 5.5L18.244 2z"/>
+              </svg>
+            )},
+            { link: "https://wa.me/5491136466617", color: "from-green-300 via-green-500 to-green-800", icon: (
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+                <path d="M20.52 3.48A11.8 11.8 0 0 0 12.05 0C5.55 0 .25 5.3.25 11.8c0 2.08.54 4.11 1.56 5.9L0 24l6.48-1.7a11.7 11.7 0 0 0 5.57 1.42h.01c6.5 0 11.8-5.3 11.8-11.8 0-3.15-1.23-6.11-3.34-8.44zM12.06 21.5a9.7 9.7 0 0 1-4.95-1.35l-.35-.2-3.85 1.01 1.03-3.76-.23-.39a9.73 9.73 0 0 1-1.49-5.2c0-5.4 4.4-9.8 9.8-9.8 2.62 0 5.08 1.02 6.93 2.87a9.73 9.73 0 0 1 2.87 6.93c0 5.4-4.4 9.8-9.8 9.8zm5.37-7.28c-.29-.15-1.73-.86-2-.96-.27-.1-.47-.15-.67.15-.2.29-.77.96-.94 1.16-.17.2-.35.22-.64.07-.29-.15-1.23-.45-2.35-1.43-.87-.77-1.46-1.73-1.63-2.02-.17-.29-.02-.45.13-.6.13-.13.29-.35.44-.52.15-.17.2-.29.3-.49.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37s-1.05 1.02-1.05 2.49c0 1.47 1.08 2.88 1.23 3.08.15.2 2.12 3.24 5.13 4.55.72.31 1.28.5 1.72.64.72.23 1.38.2 1.9.12.58-.09 1.73-.71 1.97-1.4.24-.69.24-1.28.17-1.4-.07-.12-.27-.2-.56-.35z"/>
+              </svg>
+            )},
+            { link: "https://www.instagram.com/facusarlanga/", color: "from-yellow-400 via-pink-500 to-purple-600", icon: (
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+                <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2c1.65 0 3 1.35 3 3v10c0 1.65-1.35 3-3 3H7c-1.65 0-3-1.35-3-3V7c0-1.65 1.35-3 3-3h10zm-5 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2.2a2.8 2.8 0 1 1 0 5.6 2.8 2.8 0 0 1 0-5.6zM17.8 6.2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+              </svg>
+            )},
+            { link: DISCORD_LINK, color: "from-violet-400 to-violet-800", icon: (
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+                <path d="M20.32 4.37a19.8 19.8 0 0 0-4.95-1.52l-.24.45c1.9.33 3.72.98 5.36 1.9a17.3 17.3 0 0 0-16.98 0 18.1 18.1 0 0 1 5.38-1.92l-.24-.45a19.7 19.7 0 0 0-4.96 1.52C1.6 8.14.9 11.8 1.2 15.41a19.9 19.9 0 0 0 6.05 3.03l.72-1.02a12.7 12.7 0 0 1-1.91-.91l.4-.3c3.68 1.7 7.66 1.7 11.32 0l.4.3c-.6.36-1.24.66-1.91.91l.72 1.02a19.8 19.8 0 0 0 6.04-3.03c.36-4.27-.61-7.9-2.71-11.04zM8.68 13.6c-.98 0-1.78-.9-1.78-2s.8-2 1.78-2c.99 0 1.79.9 1.78 2 0 1.1-.8 2-1.78 2zm6.64 0c-.98 0-1.78-.9-1.78-2s.8-2 1.78-2c.99 0 1.79.9 1.78 2 0 1.1-.8 2-1.78 2z"/>
+              </svg>
+            )}
+          ].map((item, i) => (
+            <a key={i} href={item.link} target="_blank">
+              <motion.div
+                whileHover={{ scale: 1.15 }}
+                whileTap={{ scale: 0.9 }}
+                className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${item.color} p-[2px]`}>
+                <div className="w-full h-full bg-black rounded-2xl flex items-center justify-center">
+                  {item.icon}
+                </div>
+              </motion.div>
+            </a>
+          ))}
+
+        </div>
+      </section>
+    </div>
+  );
+}
